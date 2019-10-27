@@ -6,6 +6,15 @@ import common.AbstractTree;
  * IntervalTree that implements Intervals interface to represents an interval tree, and evaluate it.
  */
 public class IntervalTree extends AbstractTree<Interval> implements Intervals {
+
+  @Override
+  protected boolean isOperator(String s) {
+    if (s.equalsIgnoreCase("U") || s.equalsIgnoreCase("I")) {
+      return true;
+    }
+    return false;
+  }
+
   public IntervalTree(String postfixS) {
     super(postfixS);
   }
@@ -13,38 +22,41 @@ public class IntervalTree extends AbstractTree<Interval> implements Intervals {
   @Override
   public Interval evaluate() { // type different, others are the same.
     Node t = root;
-    Interval result = inOrderEvaluate(t);
-    return result;
+    return inOrderEvaluate(t);
   }
 
-//  @Override
-//  public String textTree() {
-//    return null; // TODO
-//  }
+  //  /**
+  //   * FIXME
+  //   * @param t
+  //   * @return
+  //   */
+  //  private String preOrder(Node t) {
+  //    String leftS = "";
+  //    String rightS = "";
+  //
+  //    if (t == null) {
+  //      return "";
+  //    }
+  //
+  //    leftS = preOrder(t.left);
+  //    rightS = preOrder(t.right);
+  //
+  //    if (t.left == null && t.right == null) {
+  //      return String.valueOf(t.value);
+  //    }
+  //    return "(" + String.valueOf(t.value) + " " + leftS + " " + rightS + ")";
+  //  }
 
-  private String preOrder(Node t) {
-    String leftS = "";
-    String rightS = "";
-
-    if (t == null) {
-      return "";
-    }
-
-    leftS = preOrder(t.left);
-    rightS = preOrder(t.right);
-
-    if (t.left == null && t.right == null) {
-      return String.valueOf(t.value);
-    }
-    return "(" + String.valueOf(t.value) + " " + leftS + " " + rightS + ")";
-  }
-
-  public String schemeExpression() {
-    Node t = root;
-    String schemeExpressionS = preOrder(t);
-
-    return schemeExpressionS;
-  }
+  //  /**
+  //   * FIXME
+  //   * @return
+  //   */
+  //  public String schemeExpression() {
+  //    Node t = root;
+  //    String schemeExpressionS = preOrder(t);
+  //
+  //    return schemeExpressionS;
+  //  }
 
   @Override
   protected Interval operation(AbstractTree<Interval>.Node t, Interval l, Interval r) {
@@ -59,7 +71,6 @@ public class IntervalTree extends AbstractTree<Interval> implements Intervals {
 
     return newInterval;
   }
-
 
   @Override
   protected Interval buildEvaluateResult(AbstractTree<Interval>.Node node) {

@@ -11,11 +11,11 @@ public interface Intervals {
    * @return the result as an Interval object
    */
   Interval evaluate();
-  
+
   /**
-   * Returns a string that is the textual representation of the tree
-   * structure. For example, the expression "(1,2) (3,4) U" will be formatted
-   * as a string:
+   * Returns a string that is the textual representation of the tree structure. For example, the
+   * expression "(1,2) (3,4) U" will be formatted as a string:
+   *
    * <pre>
    *   U
    *   |
@@ -25,8 +25,8 @@ public interface Intervals {
    *   |___3,4
    * </pre>
    *
-   * The expression "(1,2) (3,4) (4,6) U (3,5) I U will be formatted as a
-   * string:
+   * The expression "(1,2) (3,4) (4,6) U (3,5) I U will be formatted as a string:
+   *
    * <pre>
    *   U
    *   |
@@ -45,21 +45,22 @@ public interface Intervals {
    *       |
    *       |___3,5
    *
-   *</pre>
+   * </pre>
+   *
    * Specifically:
+   *
    * <ul>
-   *   <li>The first operand always begins three lines down and three
-   *   spaces to the right of the operand</li>
-   *   <li>The second operand begins two lines below the end
-   *   of the first
-   *   operand</li>
-   *   <li>A vertical line (using | characters) exists that connects the line of
-   *   an operator and its two operands</li>
-   *   <li>A horizontal line (using _ characters) exists between the
-   *   vertical line from the operator to the beginning of each operand</li>
-   *   <li>Operators and operands are represented by their respective
-   *   symbols (U,I) and start,end respectively.</li>
+   *   <li>The first operand always begins three lines down and three spaces to the right of the
+   *       operand
+   *   <li>The second operand begins two lines below the end of the first operand
+   *   <li>A vertical line (using | characters) exists that connects the line of an operator and its
+   *       two operands
+   *   <li>A horizontal line (using _ characters) exists between the vertical line from the operator
+   *       to the beginning of each operand
+   *   <li>Operators and operands are represented by their respective symbols (U,I) and start,end
+   *       respectively.
    * </ul>
+   *
    * @return a string in the above format
    */
   String textTree();

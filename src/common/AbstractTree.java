@@ -14,7 +14,7 @@ public abstract class AbstractTree<T> {
   //  protected int level;
 
   /** Node class for a binary tree. */
-  public class Node {
+  protected class Node {
     public String value;
     public Node left;
     public Node right;
@@ -35,16 +35,42 @@ public abstract class AbstractTree<T> {
         return value;
       }
       StringBuilder sb = new StringBuilder();
-      sb.append("V:")
+      sb.append("(V:")
           .append(value)
           .append(", L:")
           .append(left)
           .append(", R:")
           .append(right)
-          .append("\n");
+          .append(")");
       return sb.toString();
     }
   }
+
+  /**
+   * Conduct operation on children.
+   *
+   * @param t node t
+   * @param l t left value
+   * @param r r right value
+   * @return T value
+   */
+  protected abstract T operation(Node t, T l, T r);
+
+  /**
+   * Build leaf value.
+   *
+   * @param node either a Double or an Interval
+   * @return T value
+   */
+  protected abstract T buildEvaluateResult(Node node);
+
+  /**
+   * Check if the string is an operator or not.
+   *
+   * @param s String either an operand or an operator
+   * @return true if the character is an operator false if not.
+   */
+  protected abstract boolean isOperator(String s);
 
   /**
    * Construct an ExpresstionTree object given postfix string.
@@ -54,19 +80,6 @@ public abstract class AbstractTree<T> {
   protected AbstractTree(String postfixS) {
     this.postfix = parsePostfixString(postfixS);
     root = constructTree();
-  }
-
-  /**
-   * Check if the string is an operator or not.
-   *
-   * @param s String either an operand or an operator
-   * @return true if the character is an operator false if not.
-   */
-  protected boolean isOperator(String s) {
-    if (s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/") || s.equals("^")) {
-      return true;
-    }
-    return false;
   }
 
   /**
@@ -118,24 +131,6 @@ public abstract class AbstractTree<T> {
     return t;
   }
 
-  /**
-   * Conduct operation on children.
-   *
-   * @param t node t
-   * @param l t left value
-   * @param r r right value
-   * @return T value
-   */
-  protected abstract T operation(Node t, T l, T r);
-
-  /**
-   * Build leaf value.
-   *
-   * @param node either a Double or an Interval
-   * @return T value
-   */
-  protected abstract T buildEvaluateResult(Node node);
-
   protected T inOrderEvaluate(Node t) {
     if (t != null) {
       if (!isOperator(t.value)) {
@@ -150,6 +145,29 @@ public abstract class AbstractTree<T> {
   }
 
   /**
+   * Help return text tree for printTextTree.
+   *
+   * @param t node other than root
+   * @param indent string indent
+   * @param last boolean true if it is right node false left node
+   */
+  protected void printTextTreeHelper(Node t, String indent, boolean last, StringBuilder sb) {
+    if (t == null) {
+      return;
+    }
+
+    sb.append(indent + "|\n");
+    if (!last) {
+      sb.append(indent + "|\n");
+    }
+    sb.append(indent + "|___" + t.value + "\n");
+    indent += last ? "   " : "|   ";
+
+    printTextTreeHelper(t.left, indent, false, sb);
+    printTextTreeHelper(t.right, indent, true, sb);
+  }
+
+  /**
    * Help to return Text tree.
    *
    * @param t root node
@@ -160,30 +178,7 @@ public abstract class AbstractTree<T> {
     sb.append(t.value + "\n");
     printTextTreeHelper(t.left, "", false, sb);
     printTextTreeHelper(t.right, "", true, sb);
-    
     return sb.toString();
-    
-  }
-
-  /**
-   * Help return text tree for printTextTree.
-   * @param t node other than root
-   * @param indent string indent
-   * @param last boolean true if it is right node false left node
-   */
-  protected void printTextTreeHelper(Node t, String indent, boolean last, StringBuilder sb) {
-    if (t == null) {
-      return;
-    }
-    sb.append(indent + "|\n");
-    if (!last) {
-      sb.append(indent + "|\n");
-    }
-    sb.append(indent + "|___" + t.value + "\n");
-    indent += last ? "   " : "|   ";
-
-    printTextTreeHelper(t.left, indent, false, sb);
-    printTextTreeHelper(t.right, indent, true, sb);
   }
 
   public String textTree() {

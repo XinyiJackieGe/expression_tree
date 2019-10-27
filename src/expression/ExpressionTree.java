@@ -7,9 +7,18 @@ import common.AbstractTree;
  * expression tree, and evaluate it.
  */
 public class ExpressionTree extends AbstractTree<Double> implements Expression {
+
+  @Override
+  protected boolean isOperator(String s) {
+    if (s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/") || s.equals("^")) {
+      return true;
+    }
+    return false;
+  }
+
   public ExpressionTree(String postfixS) {
     super(postfixS);
-  }  
+  }
 
   @Override
   public double evaluate() {
@@ -39,8 +48,6 @@ public class ExpressionTree extends AbstractTree<Double> implements Expression {
     }
     return "( " + leftS + " " + String.valueOf(t.value) + " " + rightS + " )";
   }
-
-  
 
   /**
    * Preorder traverse to help output scheme expression.
@@ -81,22 +88,19 @@ public class ExpressionTree extends AbstractTree<Double> implements Expression {
     return schemeExpressionS;
   }
 
- 
-
-//  @Override
-//  public String textTree() {
-//    Node t = root;
-//    String textS = printTextTree(t);
-//
-//    return "<pre>\n" + textS + "\n</pre>";
-//  }
+  //  @Override
+  //  public String textTree() {
+  //    Node t = root;
+  //    String textS = printTextTree(t);
+  //
+  //    return "<pre>\n" + textS + "\n</pre>";
+  //  }
 
   @Override
   protected Double buildEvaluateResult(AbstractTree<Double>.Node node) {
     return Double.valueOf(node.value);
   }
 
-  
   @Override
   protected Double operation(AbstractTree<Double>.Node t, Double l, Double r) {
     double ans = 0;
