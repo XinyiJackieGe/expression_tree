@@ -88,14 +88,7 @@ public class ExpressionTree extends AbstractTree<Double> implements Expression {
     return schemeExpressionS;
   }
 
-  //  @Override
-  //  public String textTree() {
-  //    Node t = root;
-  //    String textS = printTextTree(t);
-  //
-  //    return "<pre>\n" + textS + "\n</pre>";
-  //  }
-
+ 
   @Override
   protected Double buildEvaluateResult(AbstractTree<Double>.Node node) {
     return Double.valueOf(node.value);

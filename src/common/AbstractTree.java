@@ -3,15 +3,13 @@ package common;
 import java.util.Stack;
 
 /**
- * FIXME
+ * Abstract class to extract common fields and methods for both ExpressionTree and IntervalTree.
  *
- * @author xinyige
- * @param <T>
+ * @param <T> A generic type of nodes for the tree
  */
 public abstract class AbstractTree<T> {
   protected String[] postfix;
   protected Node root;
-  //  protected int level;
 
   /** Node class for a binary tree. */
   protected class Node {
