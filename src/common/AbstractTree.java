@@ -12,7 +12,7 @@ public abstract class AbstractTree<T> {
   protected Node root;
 
   /** Node class for a binary tree. */
-  protected class Node {
+  protected static class Node {
     public String value;
     public Node left;
     public Node right;
@@ -22,7 +22,7 @@ public abstract class AbstractTree<T> {
      *
      * @param item the value of the node
      */
-    protected Node(String item) {
+    public Node(String item) {
       value = item;
       left = right = null;
     }
@@ -75,8 +75,8 @@ public abstract class AbstractTree<T> {
    *
    * @param postfix String of postfix
    */
-  protected AbstractTree(String postfixS) {
-    this.postfix = parsePostfixString(postfixS);
+  protected AbstractTree(String postfix) {
+    this.postfix = parsePostfixString(postfix);
     root = constructTree();
   }
 
@@ -86,11 +86,16 @@ public abstract class AbstractTree<T> {
    * @param postfix
    * @return String array of postfix
    */
-  protected String[] parsePostfixString(String postfixS) {
-    postfixS = postfixS.replaceAll(" +", " ");
-    String[] postfix = postfixS.split(" ");
-    return postfix;
+  protected String[] parsePostfixString(String postfix) {
+    postfix = postfix.replaceAll(" +", " ");
+    return postfix.split(" ");
   }
+
+  private Node createOperatorNode(String input) {
+    return new Node(input);
+  }
+
+  protected abstract Node createOperandNode(String input);
 
   /**
    * Create expression tree in the constructor.
@@ -105,20 +110,18 @@ public abstract class AbstractTree<T> {
 
     for (int i = 0; i < postfix.length; i++) {
       if (!isOperator(postfix[i])) {
-        t = new Node(postfix[i]);
+        t = createOperandNode(postfix[i]);
         nodeStack.push(t);
       } else {
-        t = new Node(postfix[i]);
+        t = createOperatorNode(postfix[i]);
         t1 = nodeStack.pop();
         if (nodeStack.empty()) {
           throw new IllegalArgumentException("Postfix is incorrect!");
         }
-
         t2 = nodeStack.pop();
         t.left = t2;
         t.right = t1;
         nodeStack.push(t);
-        //        level ++;
       }
     }
 
@@ -159,30 +162,17 @@ public abstract class AbstractTree<T> {
       sb.append(indent + "|\n");
     }
     sb.append(indent + "|___" + t.value + "\n");
-    indent += last ? "   " : "|   ";
+    indent += last ? "    " : "|   ";
 
     printTextTreeHelper(t.left, indent, false, sb);
     printTextTreeHelper(t.right, indent, true, sb);
   }
 
-  /**
-   * Help to return Text tree.
-   *
-   * @param t root node
-   * @return String part of result
-   */
-  protected String printTextTree(Node t) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(t.value + "\n");
-    printTextTreeHelper(t.left, "", false, sb);
-    printTextTreeHelper(t.right, "", true, sb);
-    return sb.toString();
-  }
-
   public String textTree() {
-    Node t = root;
-    String textS = printTextTree(t);
-    printTextTree(t);
-    return "<pre>\n" + textS + "</pre>";
+    StringBuilder sb = new StringBuilder();
+    sb.append(root.value + "\n");
+    printTextTreeHelper(root.left, "", false, sb);
+    printTextTreeHelper(root.right, "", true, sb);
+    return sb.toString();
   }
 }

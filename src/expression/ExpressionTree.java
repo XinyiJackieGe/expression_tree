@@ -28,7 +28,7 @@ public class ExpressionTree extends AbstractTree<Double> implements Expression {
   }
 
   /**
-   * Inorder traverse to helper output infix expression.
+   * In-order traverse to helper output infix expression.
    *
    * @param t root node
    * @return infix String expression
@@ -50,7 +50,7 @@ public class ExpressionTree extends AbstractTree<Double> implements Expression {
   }
 
   /**
-   * Preorder traverse to help output scheme expression.
+   * Pre-order traverse to help output scheme expression.
    *
    * @param t node
    * @return String of scheme expression
@@ -88,14 +88,13 @@ public class ExpressionTree extends AbstractTree<Double> implements Expression {
     return schemeExpressionS;
   }
 
- 
   @Override
-  protected Double buildEvaluateResult(AbstractTree<Double>.Node node) {
+  protected Double buildEvaluateResult(Node node) {
     return Double.valueOf(node.value);
   }
 
   @Override
-  protected Double operation(AbstractTree<Double>.Node t, Double l, Double r) {
+  protected Double operation(Node t, Double l, Double r) {
     double ans = 0;
     if (t.value.equals("+")) {
       ans = l + r;
@@ -113,5 +112,10 @@ public class ExpressionTree extends AbstractTree<Double> implements Expression {
       ans = Math.pow(l, r);
     }
     return Double.valueOf(ans);
+  }
+
+  @Override
+  protected Node createOperandNode(String input) {
+    return new Node(Double.valueOf(input).toString());
   }
 }
