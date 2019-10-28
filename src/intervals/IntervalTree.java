@@ -40,21 +40,21 @@ public class IntervalTree extends AbstractTree<Interval> implements Intervals {
 
   @Override
   protected Interval buildEvaluateResult(Node node) {
-    int start = 0;
-    int end = 0;
-    String[] intervalVal;
-    intervalVal = node.value.split(",");
-    start = Integer.parseInt(intervalVal[0]);
-    end = Integer.parseInt(intervalVal[1]);
-    if (start > end) {
-      throw new IllegalArgumentException("Lower bound cannot larger than upper bound!");
-    }
+    String[] intervalVal = node.value.split(",");
+    int start = Integer.parseInt(intervalVal[0]);
+    int end = Integer.parseInt(intervalVal[1]);
     return new Interval(start, end);
   }
 
   @Override
   protected Node createOperandNode(String input) {
     Node operand = new Node(input, true);
+    String[] intervalVal = input.split(",");
+    int start = Integer.parseInt(intervalVal[0]);
+    int end = Integer.parseInt(intervalVal[1]);
+    if (start > end) {
+      throw new IllegalArgumentException("Lower bound cannot larger than upper bound!");
+    }
     return operand;
   }
 

@@ -92,7 +92,8 @@ public class ExpressionTree extends AbstractTree<Double> implements Expression {
   private void checkOperatorNode(Node node) {
     if (node.value.equals("/")) {
       if (node.right.isOperand) {
-        if (node.right.value.equals(String.valueOf(0))) {
+        double right = Double.parseDouble(node.right.value);
+        if (right == 0.) {
           throw new IllegalArgumentException("Denominator cannot be zero!");
         }
       }

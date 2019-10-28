@@ -8,7 +8,6 @@ import expression.ExpressionTree;
 /** JUnit tests for ExpressionTree. */
 public class ExpressionTest {
   public Expression et1;
-  public Expression et2;
   public Expression et3;
   public Expression et4;
   public Expression et5;
@@ -18,7 +17,6 @@ public class ExpressionTest {
   @Before
   public void setup() {
     et1 = new ExpressionTree("1 5 *   -4 + ");
-    et2 = new ExpressionTree("1 0 /");
     et3 = new ExpressionTree("1 2 + 5 3 - *");
     et4 = new ExpressionTree(" 1 2 + 5 3 - * 2 /");
     et5 = new ExpressionTree("2");
@@ -61,9 +59,6 @@ public class ExpressionTest {
     String str1 = "( ( 1.0 * 5.0 ) + -4.0 )";
     assertEquals(str1, et1.infix());
 
-    String str2 = "( 1.0 / 0.0 )";
-    assertEquals(str2, et2.infix());
-
     String str3 = "( ( 1.0 + 2.0 ) * ( 5.0 - 3.0 ) )";
     assertEquals(str3, et3.infix());
 
@@ -81,9 +76,6 @@ public class ExpressionTest {
   public void testSchemeExpression() {
     String str1 = "(+ (* 1.0 5.0) -4.0)";
     assertEquals(str1, et1.schemeExpression());
-
-    String str2 = "(/ 1.0 0.0)";
-    assertEquals(str2, et2.schemeExpression());
 
     String str3 = "(* (+ 1.0 2.0) (- 5.0 3.0))";
     assertEquals(str3, et3.schemeExpression());

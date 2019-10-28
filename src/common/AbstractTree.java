@@ -129,8 +129,6 @@ public abstract class AbstractTree<T> {
    */
   protected Node constructTree() { // same
     Node t;
-    Node t1;
-    Node t2;
     Stack<Node> nodeStack = new Stack<Node>();
 
     for (int i = 0; i < postfix.length; i++) {
@@ -138,19 +136,19 @@ public abstract class AbstractTree<T> {
         t = createOperandNode(postfix[i]);
         nodeStack.push(t);
       } else {
-        t1 = nodeStack.pop();
+        Node right = nodeStack.pop();
         if (nodeStack.empty()) {
           throw new IllegalArgumentException("Postfix is incorrect!");
         }
-        t2 = nodeStack.pop();
-        t = createOperatorNode(postfix[i], t2, t1);
+        Node left = nodeStack.pop();
+        t = createOperatorNode(postfix[i], left, right);
         nodeStack.push(t);
       }
     }
 
     t = nodeStack.pop();
     if (!nodeStack.empty()) {
-      throw new IllegalAccessError("Postfix is incorrect!");
+      throw new IllegalArgumentException("Postfix is incorrect!");
     }
     return t;
   }
