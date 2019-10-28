@@ -24,7 +24,6 @@ public interface Intervals {
    *   |
    *   |___3,4
    * </pre>
-   *
    * The expression "(1,2) (3,4) (4,6) U (3,5) I U will be formatted as a string:
    *
    * <pre>
@@ -46,7 +45,6 @@ public interface Intervals {
    *       |___3,5
    *
    * </pre>
-   *
    * Specifically:
    *
    * <ul>

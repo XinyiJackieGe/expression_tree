@@ -12,18 +12,20 @@ public abstract class AbstractTree<T> {
   protected Node root;
 
   /** Node class for a binary tree. */
-  protected static class Node {
-    public String value;
+  public static class Node {
+    public final String value;
+    public final boolean isOperand;
     public Node left;
     public Node right;
 
     /**
      * Constructs a Node object given the value of the node.
      *
-     * @param item the value of the node
+     * @param value of the node
      */
-    public Node(String item) {
-      value = item;
+    public Node(String value, boolean isOperand) {
+      this.value = value;
+      this.isOperand = isOperand;
       left = right = null;
     }
 
@@ -42,6 +44,19 @@ public abstract class AbstractTree<T> {
           .append(")");
       return sb.toString();
     }
+  }
+
+  /**
+   * Return textTree.
+   *
+   * @return String textTree
+   */
+  public String textTree() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(root.value + "\n");
+    printTextTreeHelper(root.left, "", false, sb);
+    printTextTreeHelper(root.right, "", true, sb);
+    return sb.toString().trim();
   }
 
   /**
@@ -71,6 +86,22 @@ public abstract class AbstractTree<T> {
   protected abstract boolean isOperator(String s);
 
   /**
+   * Create an operandNode. Throw exceptions if it is not a valid operator.
+   *
+   * @param input operator
+   * @return operand node
+   */
+  protected abstract Node createOperandNode(String input);
+
+  /**
+   * Create an operator node.Throw exceptions if it is not a valid operator.
+   *
+   * @param input operator
+   * @return operator node
+   */
+  protected abstract Node createOperatorNode(String value, Node left, Node right);
+
+  /**
    * Construct an ExpresstionTree object given postfix string.
    *
    * @param postfix String of postfix
@@ -83,19 +114,13 @@ public abstract class AbstractTree<T> {
   /**
    * Return a String array of postfix expression to create expression tree.
    *
-   * @param postfix
+   * @param postfix string postfix input
    * @return String array of postfix
    */
   protected String[] parsePostfixString(String postfix) {
-    postfix = postfix.replaceAll(" +", " ");
+    postfix = postfix.trim().replaceAll(" +", " ");
     return postfix.split(" ");
   }
-
-  private Node createOperatorNode(String input) {
-    return new Node(input);
-  }
-
-  protected abstract Node createOperandNode(String input);
 
   /**
    * Create expression tree in the constructor.
@@ -113,14 +138,12 @@ public abstract class AbstractTree<T> {
         t = createOperandNode(postfix[i]);
         nodeStack.push(t);
       } else {
-        t = createOperatorNode(postfix[i]);
         t1 = nodeStack.pop();
         if (nodeStack.empty()) {
           throw new IllegalArgumentException("Postfix is incorrect!");
         }
         t2 = nodeStack.pop();
-        t.left = t2;
-        t.right = t1;
+        t = createOperatorNode(postfix[i], t2, t1);
         nodeStack.push(t);
       }
     }
@@ -132,6 +155,12 @@ public abstract class AbstractTree<T> {
     return t;
   }
 
+  /**
+   * Evaluate helper to return evaluated result.
+   *
+   * @param t node t
+   * @return evaluated result
+   */
   protected T inOrderEvaluate(Node t) {
     if (t != null) {
       if (!isOperator(t.value)) {
@@ -166,13 +195,5 @@ public abstract class AbstractTree<T> {
 
     printTextTreeHelper(t.left, indent, false, sb);
     printTextTreeHelper(t.right, indent, true, sb);
-  }
-
-  public String textTree() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(root.value + "\n");
-    printTextTreeHelper(root.left, "", false, sb);
-    printTextTreeHelper(root.right, "", true, sb);
-    return sb.toString();
   }
 }

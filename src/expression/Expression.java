@@ -38,7 +38,6 @@ public interface Expression {
    *   |
    *   |___2.0
    * </pre>
-   *
    * The expression "1 4 6 - 5 + / will be formatted as a string:
    *
    * <pre>
@@ -60,7 +59,6 @@ public interface Expression {
    *       |___5.0
    *
    * </pre>
-   *
    * Specifically:
    *
    * <ul>

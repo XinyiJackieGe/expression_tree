@@ -6,23 +6,24 @@ import common.AbstractTree;
  * IntervalTree that implements Intervals interface to represents an interval tree, and evaluate it.
  */
 public class IntervalTree extends AbstractTree<Interval> implements Intervals {
+  /**
+   * Construct an interval tree.
+   *
+   * @param s postfix string input
+   */
+  public IntervalTree(String s) {
+    super(s);
+  }
 
   @Override
   protected boolean isOperator(String s) {
-    if (s.equalsIgnoreCase("U") || s.equalsIgnoreCase("I")) {
-      return true;
-    }
-    return false;
-  }
-
-  public IntervalTree(String postfixS) {
-    super(postfixS);
+    boolean res = s.equalsIgnoreCase("U") || s.equalsIgnoreCase("I");
+    return res;
   }
 
   @Override
-  public Interval evaluate() { // type different, others are the same.
-    Node t = root;
-    return inOrderEvaluate(t);
+  public Interval evaluate() {
+    return inOrderEvaluate(root);
   }
 
   @Override
@@ -45,11 +46,35 @@ public class IntervalTree extends AbstractTree<Interval> implements Intervals {
     intervalVal = node.value.split(",");
     start = Integer.parseInt(intervalVal[0]);
     end = Integer.parseInt(intervalVal[1]);
+    if (start > end) {
+      throw new IllegalArgumentException("Lower bound cannot larger than upper bound!");
+    }
     return new Interval(start, end);
   }
 
   @Override
   protected Node createOperandNode(String input) {
-    return new Node(input);
+    Node operand = new Node(input, true);
+    return operand;
+  }
+
+  @Override
+  protected Node createOperatorNode(String value, Node left, Node right) {
+    Node operator = new Node(value, false);
+    operator.left = left;
+    operator.right = right;
+    checkOperatorNode(operator);
+    return operator;
+  }
+
+  /**
+   * Check if operator and operands are valid.
+   *
+   * @param node operator node
+   */
+  private void checkOperatorNode(Node node) {
+    if (!isOperator(node.value)) {
+      throw new IllegalArgumentException("Invalid interval operator!");
+    }
   }
 }
